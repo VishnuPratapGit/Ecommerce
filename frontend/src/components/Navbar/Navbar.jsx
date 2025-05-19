@@ -5,6 +5,7 @@ import Kart from "./Kart";
 
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Accounts from "./Accounts";
 
 const Navbar = () => {
   const loggedStatus = useSelector((state) => state.auth?.status);
@@ -14,7 +15,7 @@ const Navbar = () => {
       <Logo />
       <Address />
       <SearchBar />
-      {!loggedStatus && <Link to="/login">Login</Link>}
+      {!loggedStatus ? <Link to="/login">Login</Link> : <Accounts />}
       <Kart />
     </div>
   );

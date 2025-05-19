@@ -19,7 +19,6 @@ const App = () => {
           dispatch(login(data));
         } else {
           dispatch(logout());
-          alert("user not login");
         }
       })
       .finally(() => setLoading(false));

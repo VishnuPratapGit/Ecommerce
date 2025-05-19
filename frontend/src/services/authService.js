@@ -71,6 +71,20 @@ class AuthService {
       console.log("Request not sent: ", error);
     }
   }
+
+  async logout() {
+    console.log("reached");
+    fetch(`${this.BASE_URL}/api/v1/users/logout`, {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((err) => console.log("Error in Logout", err));
+  }
 }
 
 const authService = new AuthService();

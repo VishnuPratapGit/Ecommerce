@@ -2,7 +2,7 @@ import ItemSectionTemplate from "../components/ItemSection/SectionTemplate";
 
 const Home = () => {
   return (
-    <div className="border">
+    <div>
       <ItemSectionTemplate title={"Dairy & Breads"} />
     </div>
   );

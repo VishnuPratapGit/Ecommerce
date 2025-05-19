@@ -26,9 +26,8 @@ export default function LoginForm() {
     const logged = await authService.login(inputData);
     if (!logged) alert("User Login Failed");
 
-    authService
-      .getCurrentUser()
-      .then((data) => {
+    logged &&
+      authService.getCurrentUser().then((data) => {
         if (data) {
           dispatch(login(data));
           navigate("/");
@@ -37,9 +36,7 @@ export default function LoginForm() {
           alert("Getting user details failed!");
           navigate("/login");
         }
-      })
-      .finally(() => setLoading(false));
-
+      });
     setIsSubmitting(false);
   };
 

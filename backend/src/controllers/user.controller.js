@@ -122,4 +122,48 @@ async function userLogin(req, res) {
   }
 }
 
-export { userSingup, userLogin };
+async function getCurrentUser(req, res) {
+  const user = req.user;
+
+  if (!user) {
+    return res
+      .status(404)
+      .json({ status: false, message: "user not logged in!" });
+  }
+
+  res.status(200).json(user);
+}
+
+async function userLogout(req, res) {
+  try {
+    if (!req.user?._id) {
+      return res.status(400).json({ error: "Invalid user request" });
+    }
+
+    // Clear the refresh token in the DB
+    await User.findByIdAndUpdate(req.user._id, {
+      $unset: { refreshToken: "" },
+    });
+
+    const isProduction = process.env.NODE_ENV === "production";
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "Strict" : "Lax",
+    };
+
+    // Clear cookies and send response
+    return res
+      .clearCookie("accessToken", cookieOptions)
+      .clearCookie("refreshToken", cookieOptions)
+      .status(200)
+      .json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error during logout" });
+  }
+}
+
+export { userSingup, userLogin, getCurrentUser, userLogout };
