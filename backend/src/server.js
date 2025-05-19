@@ -1,12 +1,14 @@
-import express from "express";
+import app from "./app.js";
+import connectDB from "./database/index.js";
 
-const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+connectDB()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`server started successfully.`);
+    });
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
