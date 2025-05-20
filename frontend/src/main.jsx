@@ -9,6 +9,7 @@ import AuthWrapper from "./components/AuthWrapper.jsx";
 import { Home, Login, Signup } from "./Pages/index.js";
 import MyProducts from "./components/Seller/MyProducts.jsx";
 import UploadProduct from "./components/Seller/UploadProduct.jsx";
+import ListSellingProducts from "./components/Seller/ListSellingProducts.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
     path: "/sell-products",
     element: <MyProducts />,
     children: [
+      {
+        path: "",
+        element: <ListSellingProducts />,
+      },
       {
         path: "upload-product",
         element: <UploadProduct />,

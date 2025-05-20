@@ -32,12 +32,6 @@ const UploadProduct = () => {
       return;
     }
 
-    const quantity = parseFloat(productData.quantity);
-    if (isNaN(quantity) || quantity <= 0) {
-      alert("Quantity must be a valid positive number.");
-      return;
-    }
-
     if (!images || images.length === 0) {
       alert("Minimum one image is required.");
       return;

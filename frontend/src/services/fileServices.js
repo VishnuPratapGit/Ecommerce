@@ -24,6 +24,53 @@ class FileServices {
       return false;
     }
   }
+
+  async getSellingProduct() {
+    try {
+      const response = await fetch(
+        `${this.BASE_URL}/api/v1/products/get-products`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return false;
+      } else {
+        return data.products;
+      }
+    } catch (error) {
+      console.error("Products fetch failed", error);
+      return false;
+    }
+  }
+
+  async getAllProducts() {
+    try {
+      const response = await fetch(
+        `${this.BASE_URL}/api/v1/products/get-all-products`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return false;
+      } else {
+        return data.products;
+      }
+    } catch (error) {
+      console.error("Products fetch failed", error);
+      return false;
+    }
+  }
 }
 
 const fileServices = new FileServices();

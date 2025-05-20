@@ -24,7 +24,7 @@ async function uploadProduct(req, res) {
       name,
       description,
       price: Number(price),
-      quantity: Number(quantity),
+      quantity: quantity,
       category,
       sellerId: userId,
       images: imageUrls,
@@ -47,4 +47,38 @@ async function uploadProduct(req, res) {
   }
 }
 
-export { uploadProduct };
+async function getMyProducts(req, res) {
+  try {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User not found, login first" });
+    }
+
+    const products = await Product.find({ sellerId: userId });
+
+    return res.status(200).json({ status: true, products });
+  } catch (error) {
+    console.error("Product fething failed:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
+
+async function getAllProducts(req, res) {
+  try {
+    const products = await Product.find();
+
+    return res.status(200).json({ status: true, products });
+  } catch (error) {
+    console.error("Product fething failed:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
+
+export { uploadProduct, getMyProducts, getAllProducts };
