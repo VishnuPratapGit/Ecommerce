@@ -7,6 +7,8 @@ import "./index.css";
 import App from "./App.jsx";
 import AuthWrapper from "./components/AuthWrapper.jsx";
 import { Home, Login, Signup } from "./Pages/index.js";
+import MyProducts from "./components/Seller/MyProducts.jsx";
+import UploadProduct from "./components/Seller/UploadProduct.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,16 @@ const router = createBrowserRouter([
             <Signup />
           </AuthWrapper>
         ),
+      },
+    ],
+  },
+  {
+    path: "/sell-products",
+    element: <MyProducts />,
+    children: [
+      {
+        path: "upload-product",
+        element: <UploadProduct />,
       },
     ],
   },

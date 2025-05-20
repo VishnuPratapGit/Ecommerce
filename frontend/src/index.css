@@ -6,3 +6,9 @@ body {
   min-height: 100vh;
   /* border: 2px solid white; */
 }
+
+optgroup,
+option {
+  background: #161616;
+  color: whitesmoke;
+}

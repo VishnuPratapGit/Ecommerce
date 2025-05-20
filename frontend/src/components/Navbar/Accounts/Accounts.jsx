@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { BiSolidDownArrow } from "react-icons/bi";
-import AccountOptions from "./AccountOptions";
 import { useNavigate } from "react-router-dom";
-import authService from "../../services/authService";
-import { useDispatch } from "react-redux";
-import { logout as reduxLogout } from "../../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import authService from "../../../services/authService";
+import { logout as reduxLogout } from "../../../redux/authSlice";
+import AccountOptions from "./AccountOptions";
+import MyProducts from "../../Seller/MyProducts";
 
 const AccountDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Accounts");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth?.userData);
 
   const handleLogout = () => {
     authService.logout().then(() => {
@@ -43,6 +45,12 @@ const AccountDropdown = () => {
               onClick={() => navigate("/addresses")}
               option="Saved Addresses"
             />
+            {userData.isSeller && (
+              <AccountOptions
+                onClick={() => navigate("/sell-products")}
+                option={"My Products"}
+              />
+            )}
             <AccountOptions onClick={handleLogout} option="Log Out" />
           </div>
         </div>

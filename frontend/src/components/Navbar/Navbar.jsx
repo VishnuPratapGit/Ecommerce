@@ -1,11 +1,11 @@
 import SearchBar from "./SearchBar";
 import Address from "./Address";
-import Logo from "./Logo";
+import Logo from "../Logo";
 import Kart from "./Kart";
 
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Accounts from "./Accounts";
+import Accounts from "./Accounts/Accounts";
 
 const Navbar = () => {
   const loggedStatus = useSelector((state) => state.auth?.status);
