@@ -5,14 +5,15 @@ import {
   getAllProducts,
   getMyProducts,
   uploadProduct,
+  getCategoryWiseProducts,
 } from "../controllers/product.controller.js";
 const productRoutes = express.Router();
 
 productRoutes
   .route("/upload")
   .post(verifyUser, upload.array("images", 5), uploadProduct);
-
 productRoutes.route("/get-products").get(verifyUser, getMyProducts);
 productRoutes.route("/get-all-products").get(getAllProducts);
+productRoutes.route("/grouped-by-category").get(getCategoryWiseProducts);
 
 export default productRoutes;

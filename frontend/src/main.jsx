@@ -10,6 +10,7 @@ import { Home, Login, Signup } from "./Pages/index.js";
 import MyProducts from "./components/Seller/MyProducts.jsx";
 import UploadProduct from "./components/Seller/UploadProduct.jsx";
 import ListSellingProducts from "./components/Seller/ListSellingProducts.jsx";
+import BecomeSeller from "./components/Navbar/Accounts/BecomeSeller.jsx";
 
 const router = createBrowserRouter([
   {
@@ -43,16 +44,36 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/seller-registration",
+    element: (
+      <AuthWrapper>
+        <BecomeSeller />
+      </AuthWrapper>
+    ),
+  },
+  {
     path: "/sell-products",
-    element: <MyProducts />,
+    element: (
+      <AuthWrapper>
+        <MyProducts />
+      </AuthWrapper>
+    ),
     children: [
       {
         path: "",
-        element: <ListSellingProducts />,
+        element: (
+          <AuthWrapper>
+            <ListSellingProducts />
+          </AuthWrapper>
+        ),
       },
       {
         path: "upload-product",
-        element: <UploadProduct />,
+        element: (
+          <AuthWrapper>
+            <UploadProduct />
+          </AuthWrapper>
+        ),
       },
     ],
   },

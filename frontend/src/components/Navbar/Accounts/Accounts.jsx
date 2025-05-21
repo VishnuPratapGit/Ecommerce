@@ -41,16 +41,24 @@ const AccountDropdown = () => {
               onClick={() => navigate("/orders")}
               option="My Orders"
             />
+
             <AccountOptions
               onClick={() => navigate("/addresses")}
               option="Saved Addresses"
             />
-            {userData.isSeller && (
+
+            {userData.isSeller ? (
               <AccountOptions
                 onClick={() => navigate("/sell-products")}
                 option={"My Products"}
               />
+            ) : (
+              <AccountOptions
+                onClick={() => navigate("/seller-registration")}
+                option={"Become a seller"}
+              />
             )}
+
             <AccountOptions onClick={handleLogout} option="Log Out" />
           </div>
         </div>

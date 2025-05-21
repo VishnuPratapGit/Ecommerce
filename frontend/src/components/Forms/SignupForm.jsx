@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Mail, Lock, IdCard } from "lucide-react";
 import Input from "../Input";
 import Button from "../Button";
+import authService from "../../services/authService";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login, logout } from "../../redux/authSlice";
 
 const SignupForm = () => {
   const [email, setEmail] = useState("");
@@ -10,12 +14,36 @@ const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const data = { name, email, password };
-    console.log(data);
+
+    const register = await authService.signup(data);
+
+    if (!register) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    const logged = await authService.login({ email, password });
+
+    if (logged) {
+      authService.getCurrentUser().then((data) => {
+        if (data) {
+          dispatch(login(data));
+          navigate("/");
+        } else {
+          dispatch(logout());
+          alert("Getting user details failed!");
+          navigate("/login");
+        }
+      });
+    }
     setIsSubmitting(false);
   };
 

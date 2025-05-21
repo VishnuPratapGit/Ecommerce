@@ -16,7 +16,7 @@ const UploadProduct = () => {
     category: "",
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validate product fields
     for (const [key, value] of Object.entries(productData)) {
       if (key !== "description" && !value.trim()) {
@@ -38,17 +38,22 @@ const UploadProduct = () => {
     }
 
     setLoading(true);
-    const formData = new FormData();
 
-    Object.entries(productData).forEach(([key, value]) =>
-      formData.append(key, value)
-    );
+    try {
+      const formData = new FormData();
 
-    images.forEach((imgObj) => {
-      formData.append("images", imgObj.file); // ✅ send File, not preview URL
-    });
+      // append product data
+      Object.entries(productData).forEach(([key, value]) =>
+        formData.append(key, value)
+      );
 
-    fileServices.uploadProduct(formData).then((data) => {
+      // append images
+      images.forEach((imgObj) => {
+        formData.append("images", imgObj.file);
+      });
+
+      const data = await fileServices.uploadProduct(formData);
+
       if (data) {
         console.log(data);
         alert("Upload Successful");
@@ -63,9 +68,12 @@ const UploadProduct = () => {
       } else {
         alert("Upload Failed");
       }
-    });
-
-    setLoading(false);
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("An error occurred during upload.");
+    } finally {
+      setLoading(false); // Ensures it's always reset, even on error
+    }
   };
 
   return (

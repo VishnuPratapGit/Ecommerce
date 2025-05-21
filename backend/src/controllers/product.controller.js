@@ -57,7 +57,7 @@ async function getMyProducts(req, res) {
 
     const products = await Product.find({ sellerId: userId });
 
-    return res.status(200).json({ status: true, products });
+    return res.status(200).json({ success: true, products });
   } catch (error) {
     console.error("Product fething failed:", error.message);
     res.status(500).json({
@@ -71,7 +71,7 @@ async function getAllProducts(req, res) {
   try {
     const products = await Product.find();
 
-    return res.status(200).json({ status: true, products });
+    return res.status(200).json({ success: true, products });
   } catch (error) {
     console.error("Product fething failed:", error.message);
     res.status(500).json({
@@ -81,4 +81,50 @@ async function getAllProducts(req, res) {
   }
 }
 
-export { uploadProduct, getMyProducts, getAllProducts };
+async function getCategoryWiseProducts(req, res) {
+  try {
+    const result = await Product.aggregate([
+      {
+        $match: {
+          category: {
+            $in: [
+              "dairy-bread",
+              "fruits-vegetables",
+              "snacks-munchies",
+              "stationery",
+            ],
+          },
+        },
+      },
+      { $sort: { _id: -1 } },
+      {
+        $group: {
+          _id: "$category",
+          products: { $push: "$$ROOT" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          category: "$_id",
+          products: { $slice: ["$products", 10] },
+        },
+      },
+    ]);
+
+    return res.status(200).json({ success: true, result });
+  } catch (error) {
+    console.error("Product fething failed:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
+
+export {
+  uploadProduct,
+  getMyProducts,
+  getAllProducts,
+  getCategoryWiseProducts,
+};

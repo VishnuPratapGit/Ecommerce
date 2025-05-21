@@ -24,7 +24,6 @@ export default function LoginForm() {
     const inputData = { email, password };
 
     const logged = await authService.login(inputData);
-    if (!logged) alert("User Login Failed");
 
     logged &&
       authService.getCurrentUser().then((data) => {

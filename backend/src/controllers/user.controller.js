@@ -166,4 +166,50 @@ async function userLogout(req, res) {
   }
 }
 
-export { userSingup, userLogin, getCurrentUser, userLogout };
+async function becomeSeller(req, res) {
+  try {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      return res.status(400).json({ error: "Invalid user request" });
+    }
+
+    const { sellerProfile } = req.body;
+
+    if (
+      !sellerProfile ||
+      !sellerProfile.storeName ||
+      !sellerProfile.businessAddress ||
+      !sellerProfile.bankDetails
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Incomplete seller information." });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        isSeller: true,
+        sellerProfile: sellerProfile,
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User Updation Failed." });
+    }
+
+    res.status(200).json({
+      message: "Seller profile updated successfully.",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Become Seller Error:", error);
+    res
+      .status(500)
+      .json({ message: "Server error while updating seller profile." });
+  }
+}
+
+export { userSingup, userLogin, getCurrentUser, userLogout, becomeSeller };

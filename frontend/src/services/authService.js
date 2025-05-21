@@ -16,7 +16,7 @@ class AuthService {
       const result = await response.json();
 
       if (!response.ok) {
-        console.log(result.message);
+        alert(result.message);
         return false;
       } else {
         return true;
@@ -62,7 +62,7 @@ class AuthService {
       const result = await response.json();
 
       if (!response.ok) {
-        console.log(result.message);
+        alert(result.message);
         return false;
       } else {
         return true;

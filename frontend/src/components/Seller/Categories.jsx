@@ -11,7 +11,7 @@ const Categories = ({ value, onChange }) => {
       >
         <option value="">Select Category</option>
         <optgroup label="Daily Essentials">
-          <option value="dairy-bread-eggs">Dairy, Bread & Eggs</option>
+          <option value="dairy-bread">Dairy & Bread</option>
           <option value="fruits-vegetables">Fruits & Vegetables</option>
           <option value="atta-rice-dal">Atta, Rice & Dal</option>
         </optgroup>
