@@ -36,6 +36,8 @@ const ProductDetails = ({ productData, setProductData }) => {
           className="border-2 border-neutral-600"
         />
         <Input
+          type="number"
+          min="0"
           name="price"
           value={productData.price}
           onChange={handleChange}

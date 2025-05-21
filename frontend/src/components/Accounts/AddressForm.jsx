@@ -1,14 +1,23 @@
-import Input from "../../Input";
+import Input from "../Input";
 import { Home, MapPin, Globe, Landmark } from "lucide-react";
 
-export default function AddressForm({ address, setAddress }) {
+export default function AddressForm({
+  address,
+  setAddress,
+  title = "Business Address",
+  border = true,
+}) {
   const handleChange = (e) => {
     setAddress({ ...address, [e.target.name]: e.target.value });
   };
 
   return (
-    <div className="border rounded-xl border-neutral-300 p-4 w-full">
-      <h2 className="font-semibold text-lg mb-3">Business Address</h2>
+    <div
+      className={`${
+        border ? "border" : ""
+      } rounded-xl border-neutral-300 p-4 w-full`}
+    >
+      <h2 className="font-semibold text-lg mb-3">{title}</h2>
 
       <Input
         name="street"

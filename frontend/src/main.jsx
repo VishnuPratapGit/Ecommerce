@@ -10,7 +10,8 @@ import { Home, Login, Signup } from "./Pages/index.js";
 import MyProducts from "./components/Seller/MyProducts.jsx";
 import UploadProduct from "./components/Seller/UploadProduct.jsx";
 import ListSellingProducts from "./components/Seller/ListSellingProducts.jsx";
-import BecomeSeller from "./components/Navbar/Accounts/BecomeSeller.jsx";
+import BecomeSeller from "./components/Accounts/BecomeSeller.jsx";
+import MyAddresses from "./components/Accounts/MyAddresses.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,14 @@ const router = createBrowserRouter([
         element: (
           <AuthWrapper authenticate={false}>
             <Signup />
+          </AuthWrapper>
+        ),
+      },
+      {
+        path: "addresses",
+        element: (
+          <AuthWrapper>
+            <MyAddresses />
           </AuthWrapper>
         ),
       },

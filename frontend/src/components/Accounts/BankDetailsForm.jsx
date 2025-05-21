@@ -1,4 +1,4 @@
-import Input from "../../Input";
+import Input from "../Input";
 import { Banknote, User } from "lucide-react";
 
 export default function BankDetailsForm({ bankDetails, setBankDetails }) {

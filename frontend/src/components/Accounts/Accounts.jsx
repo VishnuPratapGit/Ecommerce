@@ -2,14 +2,12 @@ import { useState } from "react";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import authService from "../../../services/authService";
-import { logout as reduxLogout } from "../../../redux/authSlice";
+import authService from "../../services/authService.js";
+import { logout as reduxLogout } from "../../redux/authSlice";
 import AccountOptions from "./AccountOptions";
-import MyProducts from "../../Seller/MyProducts";
 
 const AccountDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Accounts");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth?.userData);
@@ -27,7 +25,7 @@ const AccountDropdown = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-default items-center justify-between gap-2 w-full px-4 py-3 text-left rounded-md"
       >
-        <span className="font-semibold text-lg">{selectedOption}</span>
+        <span className="font-semibold text-lg">{"Accounts"}</span>
         <BiSolidDownArrow className="cursor-pointer" />
       </div>
 

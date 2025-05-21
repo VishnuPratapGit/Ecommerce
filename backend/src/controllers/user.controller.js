@@ -212,4 +212,46 @@ async function becomeSeller(req, res) {
   }
 }
 
-export { userSingup, userLogin, getCurrentUser, userLogout, becomeSeller };
+async function addAddress(req, res) {
+  try {
+    const userId = req.user?._id;
+
+    if (!userId) {
+      return res.status(400).json({ error: "Invalid user request" });
+    }
+
+    const address = req.body;
+
+    if (!address) {
+      return res.status(400).json({ message: "Incomplete address info." });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $push: { addresses: address } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ message: "User not found or update failed." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Address added successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error in adding address:", error);
+    res.status(500).json({ message: "Server error while updating address." });
+  }
+}
+
+export {
+  userSingup,
+  userLogin,
+  getCurrentUser,
+  userLogout,
+  becomeSeller,
+  addAddress,
+};

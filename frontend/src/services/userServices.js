@@ -3,6 +3,35 @@ class UserService {
     this.BASE_URL = import.meta.env.VITE_API_URL;
   }
 
+  async addAddress(addressData) {
+    try {
+      const response = await fetch(
+        `${this.BASE_URL}/api/v1/users/add-address`,
+        {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(addressData),
+        }
+      );
+
+      const userData = await response.json();
+
+      if (!response.ok) {
+        alert(userData.message || "Something went wrong");
+        return false;
+      }
+
+      return userData.user;
+    } catch (error) {
+      console.log("Request not sent: ", error);
+      alert("Network error");
+      return false;
+    }
+  }
+
   async sellerRegistration(sellerData) {
     try {
       const response = await fetch(

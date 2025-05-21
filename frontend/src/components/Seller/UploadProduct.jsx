@@ -2,6 +2,8 @@ import { useState } from "react";
 import fileServices from "../../services/fileServices";
 import ProductDetails from "./ProductDetails";
 import ProductImageUploader from "./ProductImageUploader";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const UploadProduct = () => {
   const [loading, setLoading] = useState(false);
@@ -16,24 +18,19 @@ const UploadProduct = () => {
     category: "",
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
     // Validate product fields
     for (const [key, value] of Object.entries(productData)) {
       if (key !== "description" && !value.trim()) {
-        alert(`Please fill the "${key}" field.`);
+        toast(`Please fill the "${key}" field.`);
         return;
       }
     }
 
-    // Validate price and quantity
-    const price = parseFloat(productData.price);
-    if (isNaN(price) || price <= 0) {
-      alert("Price must be a valid positive number.");
-      return;
-    }
-
     if (!images || images.length === 0) {
-      alert("Minimum one image is required.");
+      toast("Minimum one image is required.");
       return;
     }
 
@@ -55,24 +52,15 @@ const UploadProduct = () => {
       const data = await fileServices.uploadProduct(formData);
 
       if (data) {
-        console.log(data);
-        alert("Upload Successful");
-        setImages([]);
-        setProductData({
-          name: "",
-          description: "",
-          quantity: "",
-          price: "",
-          category: "",
-        });
+        navigate("/sell-products");
       } else {
-        alert("Upload Failed");
+        toast.error("Upload Failed");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("An error occurred during upload.");
+      toast.error("An error occurred during upload.");
     } finally {
-      setLoading(false); // Ensures it's always reset, even on error
+      setLoading(false);
     }
   };
 
@@ -92,6 +80,7 @@ const UploadProduct = () => {
       >
         {loading ? "Loading..." : "Submit Product"}
       </button>
+      <ToastContainer position="top-center" theme="dark" />
     </div>
   );
 };

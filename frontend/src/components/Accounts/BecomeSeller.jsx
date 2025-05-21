@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Input from "../../Input";
-import Button from "../../Button";
+import Input from "../Input";
+import Button from "../Button";
 import BankDetailsForm from "./BankDetailsForm";
 import AddressForm from "./AddressForm";
 import { IdCard } from "lucide-react";
-import userService from "../../../services/userServices";
+import userService from "../../services/userServices";
 import { useNavigate } from "react-router-dom";
 
 const BecomeSeller = () => {
