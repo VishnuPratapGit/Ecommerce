@@ -17,7 +17,7 @@ const SectionTemplate = ({ title }) => {
 
   return (
     <div className="p-4">
-      <div className="text-2xl font-semibold">{title}</div>
+      <div className="text-2xl font-semibold mb-5">{title}</div>
       <div className="flex overflow-x-auto py-2 gap-5 scroll-hidden">
         {products.map((p) => (
           <ProductBox

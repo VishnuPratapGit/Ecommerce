@@ -25,7 +25,7 @@ const AccountDropdown = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-default items-center justify-between gap-2 w-full px-4 py-3 text-left rounded-md"
       >
-        <span className="font-semibold text-lg">{"Accounts"}</span>
+        <span className="font-semibold text-lg">{"Account"}</span>
         <BiSolidDownArrow className="cursor-pointer" />
       </div>
 

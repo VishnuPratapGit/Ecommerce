@@ -1,3 +1,4 @@
+import Category from "../models/categories.model.js";
 import Product from "../models/produts.model.js";
 
 async function uploadProduct(req, res) {
@@ -122,9 +123,53 @@ async function getCategoryWiseProducts(req, res) {
   }
 }
 
+async function createBulkCategory(req, res) {
+  try {
+    const categories = req.body; // expecting an array of { title, image }
+
+    if (!Array.isArray(categories) || categories.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Invalid or empty category list." });
+    }
+
+    const inserted = await Category.insertMany(categories);
+
+    return res.status(201).json({
+      message: "Categories created successfully.",
+      data: inserted,
+    });
+  } catch (error) {
+    console.error("Error creating categories:", error);
+    return res.status(500).json({
+      message: "Failed to create categories.",
+      error: error.message,
+    });
+  }
+}
+
+async function getAllCategories(req, res) {
+  try {
+    const categories = await Category.find();
+
+    return res.status(200).json({
+      message: "Categories fetched successfully.",
+      categories,
+    });
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return res.status(500).json({
+      message: "Failed to fetch categories.",
+      error: error.message,
+    });
+  }
+}
+
 export {
   uploadProduct,
   getMyProducts,
   getAllProducts,
   getCategoryWiseProducts,
+  createBulkCategory,
+  getAllCategories,
 };

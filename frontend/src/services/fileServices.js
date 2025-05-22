@@ -71,6 +71,29 @@ class FileServices {
       return false;
     }
   }
+
+  async getAllCategories() {
+    try {
+      const response = await fetch(
+        `${this.BASE_URL}/api/v1/products/get-all-categories`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return false;
+      } else {
+        return data.categories;
+      }
+    } catch (error) {
+      console.error("Categories fetch failed", error);
+      return false;
+    }
+  }
 }
 
 const fileServices = new FileServices();

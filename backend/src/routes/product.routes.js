@@ -6,6 +6,8 @@ import {
   getMyProducts,
   uploadProduct,
   getCategoryWiseProducts,
+  createBulkCategory,
+  getAllCategories,
 } from "../controllers/product.controller.js";
 const productRoutes = express.Router();
 
@@ -15,5 +17,7 @@ productRoutes
 productRoutes.route("/get-products").get(verifyUser, getMyProducts);
 productRoutes.route("/get-all-products").get(getAllProducts);
 productRoutes.route("/grouped-by-category").get(getCategoryWiseProducts);
+productRoutes.route("/create-bulk-category").post(createBulkCategory);
+productRoutes.route("/get-all-categories").get(getAllCategories);
 
 export default productRoutes;
