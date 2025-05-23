@@ -72,6 +72,33 @@ class FileServices {
     }
   }
 
+  async groupedByCategory(categories) {
+    try {
+      const response = await fetch(
+        `${this.BASE_URL}/api/v1/products/grouped-by-category`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(categories),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return false;
+      } else {
+        return data.result;
+      }
+    } catch (error) {
+      console.error("Products fetch failed", error);
+      return false;
+    }
+  }
+
   async getAllCategories() {
     try {
       const response = await fetch(

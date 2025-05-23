@@ -1,23 +1,23 @@
 import "./section.css";
 import ProductBox from "./ProductBox";
-import fileServices from "../../services/fileServices";
 import { useEffect, useState } from "react";
-const SectionTemplate = ({ title }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+const SectionTemplate = ({ title, loading, products }) => {
+  if (loading) return <p>Loading products...</p>;
+  const [newTitle, setNewTitle] = useState();
 
   useEffect(() => {
-    fileServices.getAllProducts().then((data) => {
-      setProducts(data);
-      setLoading(false);
-    });
+    setNewTitle(
+      title
+        .split("-")
+        .map((str) => str[0].toUpperCase() + str.slice(1))
+        .join(" & ")
+    );
   }, []);
-
-  if (loading) return <p>Loading products...</p>;
 
   return (
     <div className="p-4">
-      <div className="text-2xl font-semibold mb-5">{title}</div>
+      <div className="text-2xl font-semibold mb-5">{newTitle}</div>
       <div className="flex overflow-x-auto py-2 gap-5 scroll-hidden">
         {products.map((p) => (
           <ProductBox

@@ -49,7 +49,15 @@ const UploadProduct = () => {
         formData.append("images", imgObj.file);
       });
 
-      const data = await fileServices.uploadProduct(formData);
+      const uploadPromise = fileServices.uploadProduct(formData);
+
+      toast.promise(uploadPromise, {
+        pending: "Uploading product...",
+        success: "Product uploaded successfully 👌",
+        error: "Upload failed 🤯",
+      });
+
+      const data = await uploadPromise;
 
       if (data) {
         navigate("/sell-products");
@@ -76,9 +84,11 @@ const UploadProduct = () => {
       <button
         disabled={loading}
         onClick={handleSubmit}
-        className="mx-5 mb-5 bg-emerald-500 text-white px-6 py-2 rounded-md hover:bg-emerald-600"
+        className={`mx-5 mb-5 bg-emerald-500 text-white px-6 py-2 rounded-md ${
+          loading ? "opacity-50" : "hover:bg-emerald-600"
+        }`}
       >
-        {loading ? "Loading..." : "Submit Product"}
+        {loading ? "Uploading..." : "Submit Product"}
       </button>
       <ToastContainer position="top-center" theme="dark" />
     </div>

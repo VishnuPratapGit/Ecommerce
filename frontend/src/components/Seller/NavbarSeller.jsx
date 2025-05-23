@@ -9,6 +9,9 @@ const NavbarSeller = () => {
       <Link to={"/sell-products"}>
         <Logo />
       </Link>
+      <Link className="hover:text-blue-500" to={"/"}>
+        Home
+      </Link>
       {/* <SearchSeller /> */}
       <SellBtn />
     </div>

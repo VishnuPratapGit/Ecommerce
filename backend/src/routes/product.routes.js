@@ -16,7 +16,7 @@ productRoutes
   .post(verifyUser, upload.array("images", 5), uploadProduct);
 productRoutes.route("/get-products").get(verifyUser, getMyProducts);
 productRoutes.route("/get-all-products").get(getAllProducts);
-productRoutes.route("/grouped-by-category").get(getCategoryWiseProducts);
+productRoutes.route("/grouped-by-category").post(getCategoryWiseProducts);
 productRoutes.route("/create-bulk-category").post(createBulkCategory);
 productRoutes.route("/get-all-categories").get(getAllCategories);
 

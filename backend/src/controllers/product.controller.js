@@ -84,16 +84,19 @@ async function getAllProducts(req, res) {
 
 async function getCategoryWiseProducts(req, res) {
   try {
+    const categories = req.body || [];
+
+    if (categories.length === 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "categories array required" });
+    }
+
     const result = await Product.aggregate([
       {
         $match: {
           category: {
-            $in: [
-              "dairy-bread",
-              "fruits-vegetables",
-              "snacks-munchies",
-              "stationery",
-            ],
+            $in: categories,
           },
         },
       },

@@ -5,7 +5,7 @@ const SellBtn = () => {
   return (
     <Link
       to={"upload-product"}
-      className="rounded-xl cursor-pointer hover:bg-purple-700 text-lg px-4 py-2 bg-purple-600"
+      className="rounded-lg cursor-pointer hover:bg-emerald-500 text-lg px-4 py-2 bg-emerald-600"
     >
       Add Product
     </Link>
