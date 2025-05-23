@@ -29,19 +29,43 @@ class AuthService {
 
   async getCurrentUser() {
     try {
-      const response = await fetch(`${this.BASE_URL}/api/v1/users/getuser`, {
+      let response = await fetch(`${this.BASE_URL}/api/v1/users/getuser`, {
         method: "GET",
         credentials: "include",
       });
+
+      if (response.status === 401) {
+        console.warn("Access token expired, trying to refresh...");
+
+        // Try to refresh tokens
+        const refreshResponse = await fetch(
+          `${this.BASE_URL}/api/v1/users/new-tokens`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        );
+
+        if (!refreshResponse.ok) {
+          console.error("Token refresh failed.");
+          return null;
+        }
+
+        //retry with new token
+        response = await fetch(`${this.BASE_URL}/api/v1/users/getuser`, {
+          method: "GET",
+          credentials: "include",
+        });
+      }
 
       const userData = await response.json();
 
       if (!response.ok) {
         console.log(userData.message);
         return null;
-      } else {
-        return userData;
       }
+
+      return userData;
     } catch (error) {
       console.log("Failed to fetch user data", error);
       return null;

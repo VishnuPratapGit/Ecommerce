@@ -13,7 +13,7 @@ function generateRefreshToken(id) {
   });
 }
 
-async function userSingup(req, res, next) {
+async function userSingup(req, res) {
   try {
     const { name, email, password } = req.body;
 
@@ -106,8 +106,14 @@ async function userLogin(req, res) {
     // Send response
     res
       .status(200)
-      .cookie("accessToken", accessToken, cookieOptions)
-      .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("accessToken", accessToken, {
+        ...cookieOptions,
+        maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+      })
+      .cookie("refreshToken", refreshToken, {
+        ...cookieOptions,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      })
       .json({
         success: true,
         message: "Login successful",
@@ -212,6 +218,74 @@ async function becomeSeller(req, res) {
   }
 }
 
+async function grantNewTokens(req, res) {
+  try {
+    const token =
+      req.cookies?.refreshToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: RefreshToken not found" });
+    }
+
+    const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+
+    if (!payload?._id) {
+      return res.status(401).json({ message: "Unauthorized: Invalid token!" });
+    }
+
+    const user = await User.findById(payload._id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    if (user.refreshToken !== token) {
+      return res
+        .status(403)
+        .json({ message: "Refresh token mismatch. Re-login required." });
+    }
+
+    // Generate tokens
+    const accessToken = generateAccessToken(user);
+    const newRefreshToken = generateRefreshToken(user._id);
+
+    user.refreshToken = newRefreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    // Cookie options
+    const isDev = process.env.NODE_ENV !== "production";
+    const cookieOptions = {
+      httpOnly: true,
+      secure: !isDev,
+      sameSite: isDev ? "lax" : "none",
+    };
+
+    // Send response
+    res
+      .status(200)
+      .cookie("accessToken", accessToken, {
+        ...cookieOptions,
+        maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+      })
+      .cookie("refreshToken", newRefreshToken, {
+        ...cookieOptions,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      })
+      .json({
+        success: true,
+        message: "New token set to cookies successfully",
+        accessToken,
+        newRefreshToken,
+      });
+  } catch (error) {
+    console.error("Token refresh error:", error);
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 async function addAddress(req, res) {
   try {
     const userId = req.user?._id;
@@ -252,6 +326,7 @@ export {
   userLogin,
   getCurrentUser,
   userLogout,
+  grantNewTokens,
   becomeSeller,
   addAddress,
 };
