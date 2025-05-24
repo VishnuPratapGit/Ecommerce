@@ -126,6 +126,33 @@ async function getCategoryWiseProducts(req, res) {
   }
 }
 
+async function searchProducts(req, res) {
+  try {
+    const keyword = req.query.q;
+
+    if (!keyword) {
+      return res.status(400).json({ error: "Empty query!" });
+    }
+
+    // Case-insensitive and partial match using regex
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { category: { $regex: keyword, $options: "i" } },
+      ],
+    });
+
+    if (!products || products.length === 0) {
+      return res.status(404).json({ error: "No products found!" });
+    }
+
+    res.status(200).json({ success: true, products });
+  } catch (error) {
+    console.error("Error in getSerchedProducts:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 async function createBulkCategory(req, res) {
   try {
     const categories = req.body; // expecting an array of { title, image }
@@ -175,4 +202,5 @@ export {
   getCategoryWiseProducts,
   createBulkCategory,
   getAllCategories,
+  searchProducts,
 };

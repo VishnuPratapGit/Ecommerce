@@ -1,36 +1,24 @@
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const items = [
-  'Search "milk"',
-  'Search "bread"',
-  'Search "buiscuit"',
-  'Search "chips"',
-];
-
-const SearchBar = () => {
-  const [searchItem, setSearchItem] = useState(items[0]);
-
-  useEffect(() => {
-    let i = 1;
-
-    const interval = setInterval(() => {
-      setSearchItem(items[i]);
-      i = (i + 1) % items.length;
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+const SearchBar = ({ search, setSearch }) => {
+  const navigate = useNavigate();
 
   return (
-    <div className="flex border border-neutral-700 rounded-xl">
+    <div
+      onClick={() => navigate("/search")}
+      className="flex border border-neutral-700 rounded-xl"
+    >
       <div className="flex items-center px-3 pointer-events-none">
         <Search className="text-neutral-500" />
       </div>
       <input
         type="text"
         className="w-2xl py-4 pr-3 text-sm outline-none"
-        placeholder={searchItem}
+        placeholder="search product..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
     </div>
   );

@@ -12,6 +12,7 @@ import UploadProduct from "./components/Seller/UploadProduct.jsx";
 import ListSellingProducts from "./components/Seller/ListSellingProducts.jsx";
 import BecomeSeller from "./components/Accounts/BecomeSeller.jsx";
 import MyAddresses from "./components/Accounts/MyAddresses.jsx";
+import SearchPage from "./Pages/SearchPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/search",
+    element: <SearchPage />,
   },
   {
     path: "/seller-registration",

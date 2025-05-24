@@ -60,7 +60,7 @@ const UploadProduct = () => {
       const data = await uploadPromise;
 
       if (data) {
-        navigate("/sell-products");
+        navigate("/sell-products", { replace: true });
       } else {
         toast.error("Upload Failed");
       }
