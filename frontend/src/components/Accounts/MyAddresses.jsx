@@ -22,22 +22,21 @@ const MyAddresses = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    console.log(address);
 
     const updatedUserData = await userService.addAddress(address);
 
     if (updatedUserData) {
       dispatch(login(updatedUserData));
       setOpenForm(false);
-    } else {
-      setAddress({
-        street: "",
-        city: "",
-        state: "",
-        pincode: "",
-        country: "India",
-      });
     }
+
+    setAddress({
+      street: "",
+      city: "",
+      state: "",
+      pincode: "",
+      country: "India",
+    });
 
     setLoading(false);
   };

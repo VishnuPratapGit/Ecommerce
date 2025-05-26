@@ -304,7 +304,7 @@ async function addAddress(req, res) {
       userId,
       { $push: { addresses: address } },
       { new: true, runValidators: true }
-    );
+    ).select("-password -refreshToken");
 
     if (!updatedUser) {
       return res

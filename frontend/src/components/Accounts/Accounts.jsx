@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,8 @@ const AccountDropdown = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth?.userData);
 
+  const dropdownRef = useRef(null);
+
   const handleLogout = () => {
     authService.logout().then(() => {
       dispatch(reduxLogout());
@@ -19,22 +21,45 @@ const AccountDropdown = () => {
     });
   };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="relative">
+    <div ref={dropdownRef} className="relative">
       <div
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-default items-center justify-between gap-2 w-full px-4 py-3 text-left rounded-md"
       >
-        <span className="font-semibold text-lg">{"Account"}</span>
+        <span className="font-semibold text-lg">
+          {userData?.name || "Accounts"}
+        </span>
         <BiSolidDownArrow className="cursor-pointer" />
       </div>
 
       {isOpen && (
         <div className="absolute cursor-pointer overflow-hidden z-10 w-60 right-0 py-2 mt-1 bg-gray-100 border-gray-300 rounded-2xl shadow-lg">
-          <div className="font-semibold px-4 py-2 text-neutral-700">
+          <div
+            onClick={() => navigate("/account/profile")}
+            className="font-semibold px-4 py-2 text-neutral-700 hover:bg-gray-200"
+          >
             My Accounts
           </div>
-          <div className="py-1">
+          <div onClick={() => setIsOpen(false)} className="py-1">
             <AccountOptions
               onClick={() => navigate("/orders")}
               option="My Orders"

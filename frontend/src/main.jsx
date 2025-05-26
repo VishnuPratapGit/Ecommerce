@@ -13,6 +13,8 @@ import ListSellingProducts from "./components/Seller/ListSellingProducts.jsx";
 import BecomeSeller from "./components/Accounts/BecomeSeller.jsx";
 import MyAddresses from "./components/Accounts/MyAddresses.jsx";
 import SearchPage from "./Pages/SearchPage.jsx";
+import MyAccountPage from "./components/Accounts/MyAccountPage.jsx";
+import AccountDetails from "./components/Accounts/AccountDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,32 @@ const router = createBrowserRouter([
             <MyAddresses />
           </AuthWrapper>
         ),
+      },
+      {
+        path: "account",
+        element: (
+          <AuthWrapper>
+            <MyAccountPage />
+          </AuthWrapper>
+        ),
+        children: [
+          {
+            path: "profile",
+            element: (
+              <AuthWrapper>
+                <AccountDetails />
+              </AuthWrapper>
+            ),
+          },
+          {
+            path: "address",
+            element: (
+              <AuthWrapper>
+                <MyAddresses />
+              </AuthWrapper>
+            ),
+          },
+        ],
       },
     ],
   },
