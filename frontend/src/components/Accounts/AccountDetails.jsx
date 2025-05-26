@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 
 const AccoutDetails = () => {
   const user = useSelector((state) => state.auth?.userData);
+  const storeName = user?.sellerProfile?.storeName;
 
   return (
     <>
@@ -20,12 +21,12 @@ const AccoutDetails = () => {
           <p className="font-medium">{user?.email}</p>
         </div>
 
-        <div className="flex gap-4">
-          <p className="text-gray-300">Store Name:</p>
-          {user?.sellerProfile?.storeName && (
-            <p className="font-medium">{user?.sellerProfile?.storeName}</p>
-          )}
-        </div>
+        {storeName && (
+          <div className="flex gap-4">
+            <p className="text-gray-300">Store Name:</p>
+            <p className="font-medium">{storeName}</p>
+          </div>
+        )}
       </div>
     </>
   );

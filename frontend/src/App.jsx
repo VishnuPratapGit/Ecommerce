@@ -29,6 +29,14 @@ const App = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1>Loading Please Wait...</h1>
+      </div>
+    );
+  }
+
   return (
     <>
       <nav className="sticky top-0">

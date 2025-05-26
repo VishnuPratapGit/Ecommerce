@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 const Address = () => {
   const user = useSelector((state) => state.auth?.userData);
 
-  const fullAddress = Object.values(user.addresses[0])
+  const fullAddress = Object.values(user?.addresses[0])
     .slice(0, 3)
     .filter(Boolean)
     .join(", ");
