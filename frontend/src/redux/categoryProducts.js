@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: false,
-  products: null,
+  products: [],
 };
 
 export const categoryProductSlice = createSlice({
@@ -15,7 +15,7 @@ export const categoryProductSlice = createSlice({
     },
     removeProducts: (state) => {
       state.status = false;
-      state.products = null;
+      state.products = [];
     },
   },
 });

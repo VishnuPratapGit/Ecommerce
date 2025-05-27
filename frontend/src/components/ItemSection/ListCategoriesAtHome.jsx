@@ -1,16 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ListCategoryItem from "./ListCategoryItem";
 import fileServices from "../../services/fileServices";
 
-const ListCategoriesAtHome = () => {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    fileServices.getAllCategories().then((data) => {
-      setCategories(data);
-    });
-  }, []);
-
+const ListCategoriesAtHome = React.memo(({ categories }) => {
   return (
     <div className="grid grid-cols-9 gap-5 my-10">
       {categories.map((category) => (
@@ -22,6 +14,6 @@ const ListCategoriesAtHome = () => {
       ))}
     </div>
   );
-};
+});
 
 export default ListCategoriesAtHome;

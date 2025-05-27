@@ -81,10 +81,12 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "/search",
     element: <SearchPage />,
   },
+
   {
     path: "/seller-registration",
     element: (
@@ -93,6 +95,7 @@ const router = createBrowserRouter([
       </AuthWrapper>
     ),
   },
+
   {
     path: "/sell-products",
     element: (

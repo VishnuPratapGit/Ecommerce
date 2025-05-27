@@ -153,6 +153,11 @@ async function searchProducts(req, res) {
   }
 }
 
+async function addProductToCart(params) {
+  try {
+  } catch (error) {}
+}
+
 async function createBulkCategory(req, res) {
   try {
     const categories = req.body; // expecting an array of { title, image }
